@@ -45,37 +45,37 @@ const cpayu = async () => {
 
     await new Promise((r) => setTimeout(r, 5000));
 
-    const ads = await page.evaluate(() => {
-      const clicar = document.querySelectorAll(
-        ".text-overflow.ags-description > img"
-      );
-      const links = [];
-      clicar.forEach((ad, index) => {
-        if (ad.style.filter === "opacity(1)") {
-          links.push(index);
-        }
-      });
-      return links;
-    });
+    // const ads = await page.evaluate(() => {
+    //   const clicar = document.querySelectorAll(
+    //     ".text-overflow.ags-description > img"
+    //   );
+    //   const links = [];
+    //   clicar.forEach((ad, index) => {
+    //     if (ad.style.filter === "opacity(1)") {
+    //       links.push(index);
+    //     }
+    //   });
+    //   return links;
+    // });
 
-    for (let id of ads) {
-      console.log(`Clicando no anúncio ${id}...`);
-      await page.evaluate((id) => {
-        document
-          .querySelectorAll(".text-overflow.ags-description > img")
-          [id].click();
-      }, id);
-      await new Promise((r) => setTimeout(r, 5000));
-      const pages = await browser.pages();
-      if (pages.length > 0) {
-        const title = await pages[0].title();
-        try {
-          const seg = title.match(/\d+/);
-          await new Promise((r) => setTimeout(r, seg[0] * 1000 + 5000));
-          await pages[pages.length - 1].close();
-        } catch (e) {}
-      }
-    }
+    // for (let id of ads) {
+    //   console.log(`Clicando no anúncio ${id}...`);
+    //   await page.evaluate((id) => {
+    //     document
+    //       .querySelectorAll(".text-overflow.ags-description > img")
+    //       [id].click();
+    //   }, id);
+    //   await new Promise((r) => setTimeout(r, 5000));
+    //   const pages = await browser.pages();
+    //   if (pages.length > 0) {
+    //     const title = await pages[0].title();
+    //     try {
+    //       const seg = title.match(/\d+/);
+    //       await new Promise((r) => setTimeout(r, seg[0] * 1000 + 5000));
+    //       await pages[pages.length - 1].close();
+    //     } catch (e) {}
+    //   }
+    // }
 
     console.log("OK");
 
