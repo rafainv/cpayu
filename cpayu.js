@@ -81,6 +81,7 @@ const cpayu = async () => {
 
     await new Promise((r) => setTimeout(r, 2000));
     await page.screenshot({ path: "screen.png" });
+    await new Promise((r) => setTimeout(r, 5000));
   } catch (error) {
     console.error(`Erro interno do servidor: ${error.message}`);
     await new Promise((r) => setTimeout(r, 5000));
