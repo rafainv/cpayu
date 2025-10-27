@@ -19,6 +19,8 @@ const cpayu = async () => {
   });
 
   try {
+
+    console.log(URL)
     await page.goto(URL, { waitUntil: "networkidle2" });
 
     await new Promise((r) => setTimeout(r, 5000));
@@ -41,7 +43,9 @@ const cpayu = async () => {
 
     await new Promise((r) => setTimeout(r, 10000));
 
-    await page.goto(`${URL}/dashboard/ads_surf`, { waitUntil: "networkidle2" });
+    // await page.goto(`${URL}/dashboard/ads_surf`, { waitUntil: "networkidle2" });
+        await page.goto(URL, { waitUntil: "networkidle2" });
+
 
     await new Promise((r) => setTimeout(r, 5000));
 
