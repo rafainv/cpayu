@@ -116,14 +116,14 @@ jobs:
       - name: Instalar dependências do Node.js
         run: npm install --no-audit --no-fund
 
-      # - name: Restaurar cookies e localStorage
-      #   env:
-      #     COOKIES: ${{ secrets.COOKIES }}
-      #     LOCALSTORAGE: ${{ secrets.LOCALSTORAGE }}
-      #   run: |
-      #     echo "$COOKIES" > cookies.json
-      #     echo "$LOCALSTORAGE" > localstorage.json
-      #     echo "✅ Cookies e localStorage restaurados."
+      - name: Restaurar cookies e localStorage
+        env:
+          COOKIES: ${{ secrets.COOKIES }}
+          LOCALSTORAGE: ${{ secrets.LOCALSTORAGE }}
+        run: |
+          echo "$COOKIES" > cookies.json
+          echo "$LOCALSTORAGE" > localstorage.json
+          echo "✅ Cookies e localStorage restaurados."
 
       - name: Executar script principal
         env:
