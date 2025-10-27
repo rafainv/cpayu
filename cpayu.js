@@ -1,6 +1,6 @@
 const { connect } = require("puppeteer-real-browser");
 const fs = require("fs");
-require("dotenv").config({ quiet: true });
+// require("dotenv").config({ quiet: true });
 
 const URL = process.env.URL;
 const COOKIES_PATH = "cookies.json";
@@ -26,26 +26,26 @@ const cpayu = async () => {
 
     await new Promise((r) => setTimeout(r, 5000));
 
-    // if (fs.existsSync(COOKIES_PATH)) {
-    //   let cookies = JSON.parse(fs.readFileSync(COOKIES_PATH));
-    //   cookies = cookies.map((c) => ({
-    //     ...c,
-    //     expires: c.expires ? Math.floor(c.expires) : undefined,
-    //   }));
-    //   await page.setCookie(...cookies);
-    // }
+    if (fs.existsSync(COOKIES_PATH)) {
+      let cookies = JSON.parse(fs.readFileSync(COOKIES_PATH));
+      cookies = cookies.map((c) => ({
+        ...c,
+        expires: c.expires ? Math.floor(c.expires) : undefined,
+      }));
+      await page.setCookie(...cookies);
+    }
 
-    // if (fs.existsSync(LOCALSTORAGE_PATH)) {
-    //   const localData = JSON.parse(fs.readFileSync(LOCALSTORAGE_PATH));
-    //   await page.evaluate((data) => {
-    //     for (const k in data) localStorage.setItem(k, data[k]);
-    //   }, localData);
-    // }
+    if (fs.existsSync(LOCALSTORAGE_PATH)) {
+      const localData = JSON.parse(fs.readFileSync(LOCALSTORAGE_PATH));
+      await page.evaluate((data) => {
+        for (const k in data) localStorage.setItem(k, data[k]);
+      }, localData);
+    }
 
-    // await new Promise((r) => setTimeout(r, 10000));
+    await new Promise((r) => setTimeout(r, 10000));
 
-    // await page.goto(`${URL}/dashboard/ads_surf`, { waitUntil: "networkidle2" });
-        // await page.goto(URL, { waitUntil: "networkidle2" });
+    await page.goto(`${URL}/dashboard/ads_surf`, { waitUntil: "networkidle2" });
+    
 
 
     await new Promise((r) => setTimeout(r, 5000));
