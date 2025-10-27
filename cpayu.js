@@ -21,7 +21,7 @@ const cpayu = async () => {
   try {
     await page.goto(URL, { waitUntil: "networkidle2" });
 
-    await new Promise((r) => setTimeout(r, 2000));
+    await new Promise((r) => setTimeout(r, 5000));
 
     if (fs.existsSync(COOKIES_PATH)) {
       let cookies = JSON.parse(fs.readFileSync(COOKIES_PATH));
@@ -39,7 +39,7 @@ const cpayu = async () => {
       }, localData);
     }
 
-    await new Promise((r) => setTimeout(r, 2000));
+    await new Promise((r) => setTimeout(r, 10000));
 
     await page.goto(`${URL}/dashboard/ads_surf`, { waitUntil: "networkidle2" });
 
