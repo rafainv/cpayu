@@ -9,9 +9,10 @@ const LOCALSTORAGE_PATH = "localstorage.json";
 const cpayu = async () => {
   const { page, browser } = await connect({
     args: ["--start-maximized"],
-    turnstile: false,
+    turnstile: true,
     headless: false,
     // disableXvfb: true,
+    proxy: process.env.PROXY
     customConfig: {},
     connectOption: {
       defaultViewport: null,
