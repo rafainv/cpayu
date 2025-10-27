@@ -1,5 +1,6 @@
 const { connect } = require("puppeteer-real-browser");
 const fs = require("fs");
+require("dotenv").config({ quiet: true });
 
 const URL = process.env.URL;
 const COOKIES_PATH = "cookies.json";
@@ -8,7 +9,7 @@ const LOCALSTORAGE_PATH = "localstorage.json";
 const cpayu = async () => {
   const { page, browser } = await connect({
     args: ["--start-maximized"],
-    turnstile: true,
+    turnstile: false,
     headless: false,
     // disableXvfb: true,
     customConfig: {},
