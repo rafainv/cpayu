@@ -62,6 +62,7 @@ const cpayu = async () => {
     });
 
     for (let id of ads) {
+      console.log(`Clicando no anúncio ${id}...`);
       await page.evaluate((id) => {
         document
           .querySelectorAll(".text-overflow.ags-description > img")
