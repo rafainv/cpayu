@@ -1,6 +1,5 @@
 const { connect } = require("puppeteer-real-browser");
 const fs = require("fs");
-require("dotenv").config({ silent: true });
 
 const URL = process.env.URL;
 const COOKIES_PATH = "cookies.json";
