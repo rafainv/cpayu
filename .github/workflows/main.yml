@@ -53,7 +53,7 @@ jobs:
           echo "$LOCALSTORAGE" > localstorage.json
 
       - name: Executar node index.js
-        run: xvfb-run --auto-servernum -- node --trace-warnings free.js
+        run: xvfb-run --auto-servernum -- node --trace-warnings cpayu.js
 
       - name: Atualiza screen.png
         env:
