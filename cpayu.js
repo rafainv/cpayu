@@ -3,6 +3,7 @@ const fs = require("fs");
 // require("dotenv").config({ quiet: true });
 
 const URL = process.env.URL;
+const PROXY = process.env.PROXY;
 const COOKIES_PATH = "cookies.json";
 const LOCALSTORAGE_PATH = "localstorage.json";
 
@@ -12,7 +13,7 @@ const cpayu = async () => {
     turnstile: true,
     headless: false,
     // disableXvfb: true,
-    proxy: process.env.PROXY
+    proxy: JSON.parse(PROXY),
     customConfig: {},
     connectOption: {
       defaultViewport: null,
