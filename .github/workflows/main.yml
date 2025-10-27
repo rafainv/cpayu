@@ -67,7 +67,6 @@
 #           git config --global user.email "actions@github.com"
 #           git add screen.pdf || echo "Nada para adicionar"
 #           git commit -m "Atualiza screen.pdf" || echo "Nada para commitar"
-#           git push --quiet || echo "Falha no push, provavelmente conflito"
 
 
 name: Nodejs
@@ -103,6 +102,7 @@ jobs:
             ca-certificates \
             apt-transport-https \
             xvfb \
+            poppler-utils \
             && sudo rm -rf /var/lib/apt/lists/*
 
       - name: Instalar Google Chrome
@@ -116,14 +116,14 @@ jobs:
       - name: Instalar dependências do Node.js
         run: npm install --no-audit --no-fund
 
-      - name: Restaurar cookies e localStorage
-        env:
-          COOKIES: ${{ secrets.COOKIES }}
-          LOCALSTORAGE: ${{ secrets.LOCALSTORAGE }}
-        run: |
-          echo "$COOKIES" > cookies.json
-          echo "$LOCALSTORAGE" > localstorage.json
-          echo "✅ Cookies e localStorage restaurados."
+      # - name: Restaurar cookies e localStorage
+      #   env:
+      #     COOKIES: ${{ secrets.COOKIES }}
+      #     LOCALSTORAGE: ${{ secrets.LOCALSTORAGE }}
+      #   run: |
+      #     echo "$COOKIES" > cookies.json
+      #     echo "$LOCALSTORAGE" > localstorage.json
+      #     echo "✅ Cookies e localStorage restaurados."
 
       - name: Executar script principal
         env:
@@ -151,24 +151,50 @@ jobs:
           sudo apt-get update && sudo apt-get install -y img2pdf qpdf
           echo "📸 Convertendo screen.png para PDF..."
 
-          img2pdf screen.png -o temp.pdf
+          # Cria PDF básico
+          img2pdf screen.png -o screen_raw.pdf
 
-          if [ -s temp.pdf ]; then
-            if [ -n "$SENHA_PDF" ]; then
-              echo "🔐 Protegendo PDF com senha..."
-              qpdf --encrypt "$SENHA_PDF" "$SENHA_PDF" 256 -- temp.pdf screen.pdf
-            else
-              echo "⚠️ SENHA_PDF não definida, gerando PDF sem senha."
-              mv temp.pdf screen.pdf
-            fi
-          else
-            echo "❌ ERRO: temp.pdf está vazio!"
+          # Verifica se foi criado corretamente
+          if [ ! -s screen_raw.pdf ]; then
+            echo "❌ ERRO: falha ao gerar PDF!"
             exit 1
           fi
 
-          rm -f temp.pdf
-          echo "✅ PDF gerado:"
+          # Aplica senha apenas se definida
+          if [ -n "$SENHA_PDF" ]; then
+            echo "🔐 Protegendo PDF com senha..."
+            if ! qpdf --encrypt "$SENHA_PDF" "$SENHA_PDF" 256 -- screen_raw.pdf screen.pdf; then
+              echo "⚠️ Falha ao proteger PDF, mantendo versão sem senha"
+              mv screen_raw.pdf screen.pdf
+            fi
+          else
+            echo "⚠️ SENHA_PDF não definida, gerando PDF sem senha."
+            mv screen_raw.pdf screen.pdf
+          fi
+
+          rm -f screen_raw.pdf
+          echo "✅ PDF final gerado:"
           ls -lh screen.pdf
+
+      - name: Verificar PDF gerado
+        run: |
+          echo "🔍 Verificando PDF screen.pdf..."
+          if [ ! -f screen.pdf ]; then
+            echo "❌ screen.pdf não existe!"
+            exit 1
+          fi
+
+          echo "📄 Informações do PDF:"
+          pdfinfo screen.pdf || echo "⚠️ Falha ao ler PDF (provavelmente corrompido)"
+
+          tamanho=$(stat -c%s "screen.pdf")
+          echo "📏 Tamanho do PDF: $tamanho bytes"
+
+          if [ $tamanho -lt 1000 ]; then
+            echo "⚠️ PDF muito pequeno, pode estar vazio ou corrompido"
+          else
+            echo "✅ PDF parece válido"
+          fi
 
       - name: Commit e push do screen.pdf
         continue-on-error: true
@@ -187,7 +213,6 @@ jobs:
           path: screen.pdf
           retention-days: 7
 
-
-
+#           git push --quiet || echo "Falha no push, provavelmente conflito"
 
 
