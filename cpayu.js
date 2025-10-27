@@ -68,13 +68,13 @@ const cpayu = async () => {
           .querySelectorAll(".text-overflow.ags-description > img")
           [id].click();
       }, id);
-      await new Promise((r) => setTimeout(r, 5000));
+      await new Promise((r) => setTimeout(r, 8000));
       const pages = await browser.pages();
       if (pages.length > 0) {
         const title = await pages[0].title();
         try {
           const seg = title.match(/\d+/);
-          await new Promise((r) => setTimeout(r, seg[0] * 1000 + 5000));
+          await new Promise((r) => setTimeout(r, seg[0] * 1000 + 8000));
           await pages[pages.length - 1].close();
         } catch (e) {}
       }
