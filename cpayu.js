@@ -13,7 +13,7 @@ const cpayu = async () => {
     turnstile: true,
     headless: false,
     // disableXvfb: true,
-    proxy: JSON.parse(PROXY),
+    // proxy: JSON.parse(PROXY),
     customConfig: {},
     connectOption: {
       defaultViewport: null,
